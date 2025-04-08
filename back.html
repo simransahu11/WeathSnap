@@ -120,9 +120,9 @@ tr:hover {
   <script>
     // Function to fetch previous data from ThingSpeak
     function fetchPreviousData() {
-      const channelID = '2680124';  // Your ThingSpeak Channel ID
+      const channelID = '2911177';  // Your ThingSpeak Channel ID
       const results = 5;            // Number of previous results to fetch
-      const url = `https://api.thingspeak.com/channels/${2680124}/feeds.json?results=${results}`;
+      const url = `https://api.thingspeak.com/channels/${2911177}/feeds.json?results=${results}`;
 
       // Fetch data from ThingSpeak API
       fetch(url)
@@ -140,8 +140,6 @@ tr:hover {
                 <td>${feed.field2 || 'N/A'}</td>
                 <td>${feed.field3 || 'N/A'}</td>
                 <td>${feed.field4 || 'N/A'}</td>
-                <td>${feed.field5 || 'N/A'}</td>
-                <td>${feed.field6 || 'N/A'}</td>
               </tr>
             `;
           });
@@ -172,10 +170,8 @@ tr:hover {
             <th>Date & Time</th>
             <th>Field 1 (Temperature)</th>
             <th>Field 2 (Humidity)</th>
-            <th>Field 3 (Pressure)</th>
+            <th>Field 3 (Rain)</th>
             <th>Field 4 (Light)</th>
-            <th>Field 5 (Air Quality)</th>
-            <th>Field 6 (Altitude)</th>
           </tr>
         </thead>
         <tbody id="dataTableBody">
