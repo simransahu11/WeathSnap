@@ -1,0 +1,188 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Weather Monitoring System - Previous Data</title>
+  <style>
+    /* Basic styling */
+body {
+  font-family: 'Arial', sans-serif;
+  background: url('3.png') no-repeat center center fixed; 
+  background-size: cover;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 100vh;
+  margin: 0;
+  padding: 20px;
+}
+
+.container {
+  background: rgba(255, 255, 255, 0.85);
+  padding: 30px;
+  border-radius: 12px;
+  box-shadow: 0 8px 16px rgba(0, 0, 0, 0.2);
+  text-align: center;
+  width: 100%;
+  max-width: 700px;
+  overflow-x: auto;
+}
+
+h1 {
+  font-size: 28px;
+  margin-bottom: 20px;
+  color: #333;
+}
+
+table {
+  width: 100%;
+  border-collapse: collapse;
+  margin-top: 20px;
+}
+
+table, th, td {
+  border: 1px solid #ddd;
+}
+
+th, td {
+  padding: 12px;
+  text-align: center;
+  font-size: 14px;
+}
+
+th {
+  background-color: #f4f4f4;
+}
+
+tr:hover {
+  background-color: #f1f1f1;
+}
+
+/* Responsive Design */
+@media (max-width: 768px) {
+  body {
+    padding: 10px;
+  }
+
+  .container {
+    padding: 20px;
+    max-width: 100%;  /* Allow container to fill the screen */
+  }
+
+  h1 {
+    font-size: 24px;
+  }
+
+  th, td {
+    padding: 8px;
+    font-size: 12px;
+  }
+
+  /* Improve background image scaling on tablets */
+  body {
+    background-size: contain;
+    background-attachment: scroll;  /* Allow background to move on scroll */
+  }
+}
+
+@media (max-width: 480px) {
+  h1 {
+    font-size: 20px;
+  }
+
+  th, td {
+    padding: 6px;
+    font-size: 10px;
+  }
+
+  table {
+    font-size: 10px;
+  }
+
+  /* Allow more space for content on small screens */
+  .container {
+    padding: 15px;
+  }
+
+  /* Improve background image scaling on smaller devices */
+  body {
+    background-size: cover;
+    background-attachment: scroll;
+  }
+}
+
+/* Ensures the table is scrollable horizontally on smaller screens */
+.table-container {
+  overflow-x: auto;
+}
+</style>
+  <script>
+    // Function to fetch previous data from ThingSpeak
+    function fetchPreviousData() {
+      const channelID = '2680124';  // Your ThingSpeak Channel ID
+      const results = 5;            // Number of previous results to fetch
+      const url = `https://api.thingspeak.com/channels/${2680124}/feeds.json?results=${results}`;
+
+      // Fetch data from ThingSpeak API
+      fetch(url)
+        .then(response => response.json())
+        .then(data => {
+          const feeds = data.feeds; // Get all the fetched feeds (data points)
+          let tableRows = '';
+
+          // Loop through each feed and create table rows for each field
+          feeds.forEach(feed => {
+            tableRows += `
+              <tr>
+                <td>${feed.created_at}</td>
+                <td>${feed.field1 || 'N/A'}</td>
+                <td>${feed.field2 || 'N/A'}</td>
+                <td>${feed.field3 || 'N/A'}</td>
+                <td>${feed.field4 || 'N/A'}</td>
+                <td>${feed.field5 || 'N/A'}</td>
+                <td>${feed.field6 || 'N/A'}</td>
+              </tr>
+            `;
+          });
+
+          // Insert the rows into the table body
+          document.getElementById('dataTableBody').innerHTML = tableRows;
+        })
+        .catch(error => {
+          console.error("Error fetching previous data:", error);
+        });
+    }
+
+    // Fetch previous data when the page loads
+    window.onload = function() {
+      fetchPreviousData();
+    };
+  </script>
+</head>
+<body>
+  <div class="container">
+    <h1>Previous Weather Data</h1>
+
+    <!-- Responsive Table Wrapper -->
+    <div class="table-container">
+      <table id="dataTable">
+        <thead>
+          <tr>
+            <th>Date & Time</th>
+            <th>Field 1 (Temperature)</th>
+            <th>Field 2 (Humidity)</th>
+            <th>Field 3 (Pressure)</th>
+            <th>Field 4 (Light)</th>
+            <th>Field 5 (Air Quality)</th>
+            <th>Field 6 (Altitude)</th>
+          </tr>
+        </thead>
+        <tbody id="dataTableBody">
+          <!-- Data will be inserted here by JavaScript -->
+        </tbody>
+      </table>
+    </div>
+  </div>
+</body>
+</html>
